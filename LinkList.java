@@ -2,7 +2,8 @@
 public class LinkList 
 {
 	private node head;
-	private int count;
+	private int count;	
+	private node tail;
 	//upgrade our LinkList so that there is a pointer called tail
 	//that points to the end of the list, and each node, knows about the
 	//previousNode. So you need to update all the add methods, all the
@@ -12,6 +13,7 @@ public class LinkList
 	{
 		this.head = null;
 		this.count = 0;
+		this.tail = null;
 	}
 	
 	public void display()
@@ -34,10 +36,12 @@ public class LinkList
 	
 	public void displayInRevers()
 	{
-		for(int i = this.count-1; i >= 0; i--)
+		node n = this.tail;
+		for(int i = 0; i < count; i++)
 		{
 			System.out.println(this.get(i));
-			System.out.print(" -> ");
+			System.out.println(n.getpayload());
+			n = n.getPrevNode();
 		}
 		System.out.println("null");
 	}
@@ -71,12 +75,15 @@ public class LinkList
 		node n = new node(payload);
 		if(head == null)
 		{
-			head = n;
+			this.head = n;
+			this.tail = n;
 		}
 		else
 		{
 			n.setNextNode(head);
 			head = n;
+			head.setPrevNode(n);
+			this.head = n;
 		}
 		this.count++;
 	}
@@ -97,12 +104,14 @@ public class LinkList
 			node n = new node(payload);
 			node prevTarget = null;
 			node fronTarget = this.head;
-			for(int i = 0; i < index-1; i++)
+			for(int i = 0; i < index; i++)
 			{
 				prevTarget = fronTarget;
 				fronTarget = fronTarget.getNextnode();
 			}
 			n.setNextNode(fronTarget);
+			n.setPrevNode(prevTarget);
+			fronTarget.setPrevNode(n);
 			prevTarget.setNextNode(n);
 			count++;
 		}
@@ -118,15 +127,14 @@ public class LinkList
 		else
 		{
 			//find the last node in the list
-			node currnode = this.head;
-			while(currnode.getNextnode() != null)
-			{
-				currnode = currnode.getNextnode();
-			}
-			//currnode will point to the very last Node in the list
+			node currnode = this.tail;
 			currnode.setNextNode(n);
+			this.tail = n;
+			n.setPrevNode(n);
 		}
+		this.tail = n;
 		this.count++;
+		
 	}
 	
 	public int removeEnd() throws Exception
@@ -146,7 +154,9 @@ public class LinkList
 		}
 		int payload = curr.getNextnode().getpayload();
 		count--;
+		curr.getNextnode().setPrevNode(null);
 		curr.setNextNode(null);
+		this.tail = curr;
 		return payload;
 		
 	}
@@ -157,8 +167,9 @@ public class LinkList
 		{
 			throw new Exception("Can Not Remove Front: Empty List");
 		}
-		node currnode = head;
+		node currnode = this.head;
 		head = head.getNextnode();
+		head.setPrevNode(null);
 		currnode.setNextNode(null);
 		this.count--;
 		return currnode.getpayload();
@@ -182,6 +193,10 @@ public class LinkList
 		{
 			throw new Exception("Cannot Remove from Index: Index must be greater than zero");
 		}
+		else if(index == count -1)
+		{
+			return this.removeEnd();
+		}
 		else
 		{
 			node targetLead = null;
@@ -194,8 +209,11 @@ public class LinkList
 			int payload = target.getpayload();
 			targetLead.setNextNode(target.getNextnode());
 			target.setNextNode(null);
+			(target.getNextnode()).setPrevNode(targetLead);
+			target.setNextNode(null);
 			this.count--;
 			return payload;
 		}
 	}
+	
 }
