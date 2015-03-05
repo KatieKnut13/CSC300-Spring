@@ -3,6 +3,8 @@ public class stack
 {
 	private item topItem;
 	
+	
+	
 	public stack()
 	{
 		this.topItem = null;
