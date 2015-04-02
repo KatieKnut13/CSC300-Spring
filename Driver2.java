@@ -1,17 +1,16 @@
+import java.util.Random;
+
 
 public class Driver2 
 {
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
+		Random r = new Random();
 		BinaryTree bt = new BinaryTree();
-		bt.add(2);
-		bt.add(5);
-		bt.add(7);
-		bt.add(1);
-		bt.add(0);
-		bt.add(3);
-		bt.displayInOrder();
-		bt.displayPostOrder();
-
+		for(int i = 0; i < 5000; i++)
+		{
+			bt.add(r.nextInt());
+		}
+		System.out.print(bt.isBalanced());
 	}
 }
