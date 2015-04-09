@@ -23,16 +23,16 @@ public class BinaryTree
 		this.parent = null;
 	}
 
-	private void changeDepth(int amount)
+	private void updateDepths(int newDepth)
 	{
-		this.depth += amount;
+		this.depth += newDepth;
 		if(this.leftTree != null)
 		{
-			this.leftTree.changeDepth(amount);
+			this.leftTree.updateDepths(this.depth + 1);
 		}
 		if(this.rightTree != null)
 		{
-			this.rightTree.changeDepth(amount);
+			this.rightTree.updateDepths(this.depth + 1);
 		}
 	}
 
@@ -82,6 +82,7 @@ public class BinaryTree
 		//notify pivP who his new parent is
 		pivot.rightTree = pivP;
 		pivP.parent = pivot;
+		pivot.updateDepths(pivot.depth - 1);
 	}
 
 	private void rotateLeft(BinaryTree pivot)
@@ -124,6 +125,7 @@ public class BinaryTree
 		}
 		pivot.leftTree = pivP;
 		pivP.parent = pivot;
+		pivot.updateDepths(pivot.depth - 1);
 	}
 	
 	public boolean search(int value)
