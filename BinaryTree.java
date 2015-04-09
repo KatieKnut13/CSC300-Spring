@@ -6,6 +6,7 @@ public class BinaryTree
 	private int payload;
 	private BinaryTree leftTree;
 	private BinaryTree rightTree;
+	private BinaryTree parent;
 	private int depth;
 	
 	public BinaryTree()
@@ -19,8 +20,112 @@ public class BinaryTree
 		this.leftTree = null;
 		this.rightTree = null;
 		this.depth = depth;
+		this.parent = null;
 	}
 
+	private void changeDepth(int amount)
+	{
+		this.depth += amount;
+		if(this.leftTree != null)
+		{
+			this.leftTree.changeDepth(amount);
+		}
+		if(this.rightTree != null)
+		{
+			this.rightTree.changeDepth(amount);
+		}
+	}
+
+	private void rotateRight(BinaryTree pivot)
+	{
+		BinaryTree pivRT = null;
+		BinaryTree pivP = null;
+		BinaryTree pivGP = null;
+		if(pivot.rightTree != null)
+		{
+			pivRT = pivot.rightTree;
+			pivot.rightTree = null;
+		}
+		pivP = pivot.parent;
+		pivGP = (pivP == null?null:pivP.parent);
+		if(pivGP != null)
+		{
+			if(pivGP.leftTree == pivP)
+			{
+				pivGP.leftTree = pivot;
+			}
+			else
+			{
+				pivGP.rightTree = pivot;
+			}
+		}
+		else
+		{
+			//pivot is the new root tree of the entire tree
+			pivot.parent = null;
+		}
+		
+		//always remove pivot from his parent
+		if(pivP == null)
+		{
+			System.err.println("I have no parent...should I be calling rotate right?");
+			return;
+		}
+		else
+		{
+			//should always get to this else
+			//always replace pivP's left tree with whatever pivT points to
+			pivP.leftTree = pivRT;
+		}
+		
+		//finally connect pivP as the right child of pivot and 
+		//notify pivP who his new parent is
+		pivot.rightTree = pivP;
+		pivP.parent = pivot;
+	}
+
+	private void rotateLeft(BinaryTree pivot)
+	{
+		BinaryTree pivLT = null;
+		BinaryTree pivP = null;
+		BinaryTree pivGP = null;
+		if(pivot.leftTree != null)
+		{
+			pivLT = pivot.leftTree;
+			pivot.leftTree = null;
+		}
+		pivP = pivot.parent;
+		pivGP = (pivP == null?null:pivP.parent);
+		//conditionally remove pivP from his parent if he had a parent
+		if(pivGP != null)
+		{
+			if(pivGP.leftTree == pivP)
+			{
+				pivGP.leftTree = pivot;
+			}
+			else
+			{
+				pivGP.rightTree = pivot;
+			}
+		}
+		else
+		{
+			//pivot is the new root tree of the entire tree
+			pivot.parent = null;
+		}
+		if(pivP == null)
+		{
+			System.err.println("I have no parent...should I be calling rotate left?");
+			return;
+		}
+		else
+		{
+			pivP.rightTree = pivLT;
+		}
+		pivot.leftTree = pivP;
+		pivP.parent = pivot;
+	}
+	
 	public boolean search(int value)
 	{
 		if(this.isEmpty)
@@ -191,7 +296,8 @@ public class BinaryTree
 			{
 				if(this.leftTree == null)
 				{
-					this.leftTree = new BinaryTree(this.depth+1);	
+					this.leftTree = new BinaryTree(this.depth+1);
+					this.leftTree.parent = this;
 				}
 				this.leftTree.add(value);
 			}
@@ -200,47 +306,10 @@ public class BinaryTree
 				if(this.rightTree == null)
 				{
 					this.rightTree = new BinaryTree(this.depth+1);
+					this.rightTree.parent = this;
 				}
 				this.rightTree.add(value);
 			}
-			if(!isBalanced())
-			{
-				this.balance();
-			}
 		}
 	}
-	
-	private void balance()
-	{
-		if(tree is right heavy)
-		{
-			if(tree 's right subtree is left heavy')
-			{
-				//perform double left rotation
-			}
-			else
-			{
-				bt rootParent = this.myRoot;
-				this.myRoot = this.RightTree;
-				this.rightTree.leftTree = this;
-				this.myRoot.myRoot = rootParent;
-			}
-		}
-		else if(tree is left heavy)
-		{
-			if(tree's left subtree is right heavy')
-			{
-				//perform double right rotation
-			}
-			else
-			{
-				bt rootParent = this.myRoot;
-				this.myRoot = this.leftTree;
-				this.leftTree.rightTree = this;
-				this.myRoot.myRoot = rootParent;
-			}
-		}
-	
-	}
-	
 }
