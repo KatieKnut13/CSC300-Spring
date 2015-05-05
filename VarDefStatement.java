@@ -1,5 +1,5 @@
 
-public class VarDefStatement 
+public class VarDefStatement extends Object
 {
 	private VarExpression theVarExpr;
 	private MathExpression theMathExpr;
@@ -8,16 +8,13 @@ public class VarDefStatement
 	{
 		this.theVarExpr = theVarExpr;
 		this.theMathExpr = theMathExpr;
-		System.out.println("You have created the master statement");
 	}
 	
-	public void setVarExpr(VarExpression varEx)
+	public String toString()
 	{
-		this.theVarExpr = varEx;
-	}
-	
-	public void setMathExpr(MathExpression mathEx)
-	{
-		this.theMathExpr = mathEx;
+		//write this such that it rebuilds the String version
+		//of the original statement.  You MAY NOT just use the
+		//store string variable theStmt
+		return theVarExpr.getVarName() + " = " + theMathExpr.toString();
 	}
 }

@@ -5,16 +5,12 @@ public class Expression
 	
 	public Expression()
 	{
-		this.content = null;
+		
 	}
 	
-	public Expression(String s)
+	public String getVarName()
 	{
-		this.content = s;
-	}
-	
-	public String getContent()
-	{
-		return this.content;
+		//doesn't do anything. Not supposed to.
+		return null;
 	}
 }
