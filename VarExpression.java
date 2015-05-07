@@ -1,26 +1,21 @@
 
-public class VarExpression 
+public class VarExpression extends Expression
 {
-	private String varName;
-	private String type = "var";
+private String varName;
 	
 	public VarExpression(String varName)
 	{
 		this.varName = varName;
 	}
 	
+	public String toString()
+	{
+		return varName;
+	}
+	
 	public String getVarName()
 	{
 		return this.varName;
 	}
-	
-	public String getType()
-	{
-		return this.type;
-	}
-	
-	public String toString()
-	{
-		return this.varName;
-	}
+
 }

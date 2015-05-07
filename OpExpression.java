@@ -1,15 +1,39 @@
 
 public class OpExpression 
 {
-	private char theOp;
+private char theOp;
 	
-		public OpExpression(char theOp)
+	public OpExpression(char theOp)
+	{
+		this.theOp = theOp;
+	}
+	
+	public String toString()
+	{
+		return "" + this.theOp;
+	}
+	
+	public int applyOperator(int leftNum, int rightNum)
+	{
+		if(this.theOp == '+')
 		{
-			this.theOp = theOp;
+			return leftNum + rightNum;
 		}
-
-		public char getTheOp() 
+		else if(this.theOp == '-')
 		{
-			return theOp;
+			return leftNum - rightNum;
 		}
+		else if(this.theOp == '*')
+		{
+			return leftNum * rightNum;
+		}
+		else if(this.theOp == '%')
+		{
+			return leftNum % rightNum;
+		}
+		else
+		{
+			return leftNum / rightNum;
+		}
+	}
 }
